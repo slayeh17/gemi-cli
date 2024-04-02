@@ -63,7 +63,7 @@ def main():
     parser = argparse.ArgumentParser(description='gemi-cli - A CLI application to access gemini from your command line. :)')
     parser.add_argument('-c', '--chat', action='store_true', help='Start a conversation with gemini')
     parser.add_argument('-ri', '--read-image', metavar='image_location', help='Show image at specified location.')
-    parser.add_argument('-rt', '--read-file', metavar='file_location', help='Read contents of the specified file.')
+    parser.add_argument('-rf', '--read-file', metavar='file_location', help='Read contents of the specified file.')
     parser.add_argument('-p', '--prompt', metavar='prompt', help='Add a prompt for the image')
 
     args = parser.parse_args()
