@@ -6,6 +6,9 @@
 - Gemini is multi-modal so it can read images and texts and answer questions on them based on the prompt given
 - It can also be used to have a multi-turn conversation with Gemini
 
+## YouTube Demo
+[![YouTube Demo](https://i9.ytimg.com/vi_webp/NH0_D6IudIc/mq1.webp?sqp=CLj3rbAG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGH8gEygUMA8=&rs=AOn4CLA1mbFoOm-3ydM6rN4RyistC1twLw)](https://youtu.be/NH0_D6IudIc)
+
 ## Examples
 ```
 usage: gemi-cli [-h] [-c] [-ri image_location] [-rt file_location] [-p prompt]
