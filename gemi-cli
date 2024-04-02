@@ -1,0 +1,81 @@
+#!/usr/bin/python3
+
+import google.generativeai as genai
+import os
+import argparse
+from PIL import Image 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_key = os.getenv('API_KEY')
+
+if api_key == None:
+    print("\033[1;31;40mNo api key was found. Click on https://aistudio.google.com/app/apikey to get one and store it in a .env file as 'API_KEY'.")
+    exit(1)
+else:
+    genai.configure(api_key=os.getenv('API_KEY'))
+
+def read_image(image_location, prompt):
+    try:
+        img = Image.open(image_location)
+        model = genai.GenerativeModel('gemini-pro-vision')
+        response = model.generate_content([prompt, img], stream=True)
+        response.resolve()
+        print("\033[1;36;40m"+response.text)
+    except FileNotFoundError:
+        print("Image not found.")
+    except TypeError:
+        print("Prompt was missing.")
+
+def read_file(file_location, prompt):
+    try:
+        with open(file_location, 'r') as file:
+            contents = file.read()
+            model = genai.GenerativeModel('gemini-pro')
+            response = model.generate_content(contents, prompt)
+            print("\033[1;36;40m"+response.text)
+    except FileNotFoundError:
+        print("File not found.")
+    except TypeError:
+        print("Prompt was missing.")
+
+def start_chat():
+    try:
+        print("Your conversation with gemini starts here. Type 'exit' to quit conversation.")
+        model = genai.GenerativeModel('gemini-pro')
+        chat = model.start_chat(history=[])
+
+        while True:
+            message = input("\n\033[1;32;40mYou: ")
+            if(message == "exit"):
+                break
+
+            response = chat.send_message(message)
+            print("\n\033[1;36;40mGemini: "+response.text)
+
+    except EOFError:
+        print("\n\033[1;31;40m You must have pressed ctrl+d which stopped the conversation.")
+
+
+
+def main():
+    parser = argparse.ArgumentParser(description='gemi-cli - A CLI application to access gemini from your command line. :)')
+    parser.add_argument('-c', '--chat', action='store_true', help='Start a conversation with gemini')
+    parser.add_argument('-ri', '--read-image', metavar='image_location', help='Show image at specified location.')
+    parser.add_argument('-rt', '--read-file', metavar='file_location', help='Read contents of the specified file.')
+    parser.add_argument('-p', '--prompt', metavar='prompt', help='Add a prompt for the image')
+
+    args = parser.parse_args()
+    
+    if args.chat:
+        start_chat()
+    elif args.read_image:
+        read_image(args.read_image, args.prompt)
+    elif args.read_file:
+        read_file(args.read_file, args.prompt)
+    else:
+        parser.print_help()
+
+if __name__ == "__main__":
+    main()
