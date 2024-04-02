@@ -33,7 +33,7 @@ def read_file(file_location, prompt):
         with open(file_location, 'r') as file:
             contents = file.read()
             model = genai.GenerativeModel('gemini-pro')
-            response = model.generate_content(contents, prompt)
+            response = model.generate_content(prompt+"\n"+contents)
             print("\033[1;36;40m"+response.text)
     except FileNotFoundError:
         print("File not found.")
