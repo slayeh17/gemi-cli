@@ -41,6 +41,7 @@ options:
 - If you are using `zsh` then add this line to your `.zshrc` file `export export PATH=$PATH:"the path got from pwd"`. If you are using `bash` add the `export` line to your `.bashrc` file
 - Execute `source ~/.zshrc` or `source ~/.bashrc`
 - Now you can use the `gemi-cli` command from anywhere in your machine
+- At first you'll be asked to get the API_KEY. After getting the API_KEY rename the `.env_example` file to `.env` and paste the Key there
 
 ## Uninstallation
 - Remove the `export` line from `.zshrc` or `.bashrc`
