@@ -41,7 +41,7 @@ options:
 - Run `pip install -r requirements.txt`
 - Execute `chmod +x gemi-cli`
 - Execute `pwd` which should give you your current location
-- If you are using `zsh` then add this line to your `.zshrc` file `export PATH=$PATH:"the path got from pwd"`. If you are using `bash` add the `export` line to your `.bashrc` file
+- If you are using `zsh` then add this line `export PATH=$PATH:"the path got from pwd"` to your `.zshrc` file. If you are using `bash` add the `export` line to your `.bashrc` file
 - Execute `source ~/.zshrc` or `source ~/.bashrc`
 - Now you can use the `gemi-cli` command from anywhere in your machine
 - At first you'll be asked to get the API_KEY. After getting the API_KEY rename the `.env_example` file to `.env` and paste the Key there
