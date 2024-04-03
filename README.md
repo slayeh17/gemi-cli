@@ -49,4 +49,4 @@ options:
 ## Uninstallation
 - Remove the `export` line from `.zshrc` or `.bashrc`
 - Run `pip uninstall -y -r requirements.txt`
-- Now you have remove `gemi-cli` from your machine
+- Now you have removed `gemi-cli` from your machine
