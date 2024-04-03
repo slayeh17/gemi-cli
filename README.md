@@ -37,7 +37,7 @@ options:
 
 
 ## Installation 
-- Clone the repo
+- Clone the repo and `cd` into it
 - Run `pip install -r requirements.txt`
 - Execute `chmod +x gemi-cli`
 - Execute `pwd` which should give you your current location
