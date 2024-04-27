@@ -5,6 +5,7 @@ import os
 import argparse
 from PIL import Image 
 from dotenv import load_dotenv
+from PyPDF2 import PdfReader
 
 load_dotenv()
 
@@ -20,25 +21,37 @@ def read_image(image_location, prompt):
     try:
         img = Image.open(image_location)
         model = genai.GenerativeModel('gemini-pro-vision')
-        response = model.generate_content([prompt, img], stream=True)
+        response = model.generate_content([prompt, img])
         response.resolve()
         print("\033[1;36;40m"+response.text)
     except FileNotFoundError:
-        print("Image not found.")
+        print("\n\033[1;31;40mImage not found.")
     except TypeError:
-        print("Prompt was missing.")
+        print("\n\033[1;31;40mPrompt was missing.")
 
 def read_file(file_location, prompt):
     try:
-        with open(file_location, 'r') as file:
-            contents = file.read()
-            model = genai.GenerativeModel('gemini-pro')
-            response = model.generate_content(prompt+"\n"+contents)
-            print("\033[1;36;40m"+response.text)
+        if(file_location[-4:] != ".pdf"):
+            with open(file_location, 'r') as file:
+                contents = file.read() 
+        else:
+            reader = PdfReader(file_location)
+            if(len(reader.pages) > 20):
+                print("\n\033[1;31;40mPDF file is too big. Use -rpdf for a single page.")
+                return
+            else:
+                for i in range(0, len(reader.pages)):
+                    contents = reader.pages[i].extract_text()
+
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt+"\n"+contents)
+        print("\033[1;36;40m"+response.text)
     except FileNotFoundError:
-        print("File not found.")
+        print("\n\033[1;31;40mFile not found.")
     except TypeError:
-        print("Prompt was missing.")
+        print("\n\033[1;31;40mPrompt was missing.")
+    except UnicodeDecodeError:
+        print("\n\033[1;31;40mFile type not supported yet.")
 
 def start_chat():
     try:
@@ -57,6 +70,22 @@ def start_chat():
     except EOFError:
         print("\n\033[1;31;40mYou must have pressed ctrl+d which stopped the conversation.")
 
+def read_pdf_file(file_location, prompt, page_number):
+    try:
+        if(file_location[-4:] == ".pdf"):
+            reader = PdfReader(file_location)
+            contents = reader.pages[page_number-1].extract_text()
+        else:
+            print("\n\033[1;31;40mNot a PDF file.")
+            return
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt+"\n"+contents)
+        print("\033[1;36;40m"+response.text)
+    except FileNotFoundError:
+        print("\n\033[1;31;40mFile not found.")
+    except TypeError:
+        print("\n\033[1;31;40mPrompt was missing.")
+
 
 
 def main():
@@ -64,7 +93,9 @@ def main():
     parser.add_argument('-c', '--chat', action='store_true', help='Start a conversation with gemini')
     parser.add_argument('-ri', '--read-image', metavar='image_location', help='Show image at specified location.')
     parser.add_argument('-rf', '--read-file', metavar='file_location', help='Read contents of the specified file.')
-    parser.add_argument('-p', '--prompt', metavar='prompt', help='Add a prompt for the image')
+    parser.add_argument('-rpdf', '--read-pdf-file', metavar='file_location', help='Read contents of the specified pdf file.')
+    parser.add_argument('-page', metavar='page_number', type=int, help='Specify page number for PDF file.')
+    parser.add_argument('-p', '--prompt', metavar='prompt', help='Add a prompt')
 
     args = parser.parse_args()
     
@@ -74,6 +105,8 @@ def main():
         read_image(args.read_image, args.prompt)
     elif args.read_file:
         read_file(args.read_file, args.prompt)
+    elif args.read_pdf_file:
+        read_pdf_file(args.read_pdf_file, args.prompt, args.page)
     else:
         parser.print_help()
 
