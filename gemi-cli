@@ -40,8 +40,11 @@ def read_file(file_location, prompt):
                 print("\n\033[1;31;40mPDF file is too big. Use -rpdf for a single page.")
                 return
             else:
+                texts = ""
                 for i in range(0, len(reader.pages)):
-                    contents = reader.pages[i].extract_text()
+                    texts += reader.pages[i].extract_text()
+                
+                contents = texts
 
         model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(prompt+"\n"+contents)
@@ -92,8 +95,8 @@ def main():
     parser = argparse.ArgumentParser(description='gemi-cli - A CLI application to access gemini from your command line. :)')
     parser.add_argument('-c', '--chat', action='store_true', help='Start a conversation with gemini')
     parser.add_argument('-ri', '--read-image', metavar='image_location', help='Show image at specified location.')
-    parser.add_argument('-rf', '--read-file', metavar='file_location', help='Read contents of the specified file.')
-    parser.add_argument('-rpdf', '--read-pdf-file', metavar='file_location', help='Read contents of the specified pdf file.')
+    parser.add_argument('-rf', '--read-file', metavar='file_location', help='Read contents of the specified file or small pdfs.')
+    parser.add_argument('-rpdf', '--read-pdf-file', metavar='file_location', help='Read contents of a specified page from a pdf file.')
     parser.add_argument('-page', metavar='page_number', type=int, help='Specify page number for PDF file.')
     parser.add_argument('-p', '--prompt', metavar='prompt', help='Add a prompt')
 
