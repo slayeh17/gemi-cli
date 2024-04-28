@@ -3,15 +3,17 @@
 ## Description: It is a simple CLI tool built to use Google's Gemini from the command line. 
 
 ## Features:
-- Gemini is multi-modal so it can read images and texts and answer questions on them based on the prompt given
-- It can also be used to have a multi-turn conversation with Gemini
+- gemi cli can read a text file and answer questions based on the prompt
+- It can read an image and answer questions based on the prompt
+- It can read small pdfs (4-8 pages) and answer questions based on the prompt
+- It can read a single page of a pdf and answer questions based on the prompt
 
-## YouTube Demo
-[![YouTube Demo](https://i9.ytimg.com/vi_webp/NH0_D6IudIc/mq1.webp?sqp=CLj3rbAG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGH8gEygUMA8=&rs=AOn4CLA1mbFoOm-3ydM6rN4RyistC1twLw)](https://youtu.be/NH0_D6IudIc)
+## YouTube Demo [Link](https://www.youtube.com/watch?v=vsF067nVfek)
 
 ## Examples
 ```
-usage: gemi-cli [-h] [-c] [-ri image_location] [-rt file_location] [-p prompt]
+usage: gemi-cli [-h] [-c] [-ri image_location] [-rf file_location] [-rpdf file_location]
+                [-page page_number] [-p prompt]
 
 gemi-cli - A CLI application to access gemini from your command line. :)
 
@@ -20,10 +22,13 @@ options:
   -c, --chat            Start a conversation with gemini
   -ri image_location, --read-image image_location
                         Show image at specified location.
-  -rt file_location, --read-file file_location
-                        Read contents of the specified file.
+  -rf file_location, --read-file file_location
+                        Read contents of the specified file or small pdfs.
+  -rpdf file_location, --read-pdf-file file_location
+                        Read contents of a specified page from a pdf file.
+  -page page_number     Specify page number for PDF file.
   -p prompt, --prompt prompt
-                        Add a prompt for the image
+                        Add a prompt
 ```
 
 ### Reading an image
